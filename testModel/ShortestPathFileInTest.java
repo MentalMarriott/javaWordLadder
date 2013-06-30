@@ -13,7 +13,7 @@ public class ShortestPathFileInTest {
 	public void test()
 	{
 		ShortestPath shrtPath = new ShortestPath("Baker", "Flake");
-		shrtPath.printAllWords();
+		shrtPath.printAllWords(shrtPath.getAllWords());
 	}
 
 }

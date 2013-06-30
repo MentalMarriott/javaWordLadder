@@ -13,6 +13,7 @@ public class ShortestPath
 	private ArrayList<String> allWords = new ArrayList<String>();
 	private ArrayList<String> queue = new ArrayList<String>();
 	
+	private boolean validParameters = true;
 	private String parent, startWord, endWord;
 	
 	/**
@@ -46,9 +47,23 @@ public class ShortestPath
 			String fileName = "dict" + lengthOfStartWord + ".txt";
 			FileIn fileIn = new FileIn(fileName);
 			allWords = fileIn.readFile();
+			
+			checkWordsExist();
 		}
 	}
 	
+	/**
+	 * Checks to see if start word and end word are in the list of all words
+	 * @return boolean
+	 */
+	public void checkWordsExist()
+	{
+		if(!(this.allWords.contains(startWord)) || !(this.allWords.contains(endWord)))
+		{
+			System.out.println("Error: One of the words could not be found, please try again");
+			this.validParameters = false;
+		}
+	}
 	
 	/**
 	 * Verifies start and end word are same length.
@@ -63,11 +78,23 @@ public class ShortestPath
 		{
 			System.out.println("Error: Length of start word does not match length of end word, please enter new words");
 			matchLength = false;
+			this.validParameters = false;
 		}
-		
+	
 		return matchLength;
 	}
 	
+	/**
+	 * Returns true only if bothe words lengths match and they
+	 * can be found in the list of all words.
+	 * @return validParameters
+	 */
+	public boolean isValidParameters()
+	{
+		return validParameters;
+	}
+
+
 	/**
 	 * This takes the word at the start of the queue and letter by letter
 	 * replaces with each letter of the alphabet. It then checks it against the 
@@ -77,11 +104,13 @@ public class ShortestPath
 	 */
 	public void calculateShortestPath()
 	{
-		this.parent = null;
+		this.parent = this.startWord;
 		this.wordParent.put(this.startWord, this.parent);
 		char alphabetLetter;
 		int i;
 		
+		//label used for breaking loop
+		outerLoop:
 		while(!(this.queue.isEmpty()))
 		{
 			char[] splitWord = this.queue.get(0).toCharArray();
@@ -95,15 +124,21 @@ public class ShortestPath
 					char[] splitWordEdit = this.queue.get(0).toCharArray();
 					splitWordEdit[i] = alphabetLetter;
 					testWord = new String(splitWordEdit);
-					//System.out.print(testWord + "\n");
 					checkWordExists(testWord);
+					if(testWord.equals(this.endWord))
+					{
+						System.out.println("End word found!");
+						break outerLoop;
+					}
 				}
 			}
 			this.queue.remove(0);
 		}
-		
+		printLadder();
+		System.out.println("Done!");
 	}
-	
+
+
 	/**
 	 * Checks to see if valid word and if it is then it will add it to the end
 	 * of the queue and set the wordparent and remove from all words to avoid
@@ -117,13 +152,6 @@ public class ShortestPath
 			this.queue.add(testWord);
 			this.wordParent.put(testWord, this.queue.get(0));
 			this.allWords.remove(testWord);
-			
-			if(testWord.equals(this.endWord))
-			{
-				System.out.println("----------------------------End word found -----------------------------");
-				printLadder();
-				System.out.println("moosecake2");
-			}
 		}
 	}
 	
@@ -137,31 +165,30 @@ public class ShortestPath
 		
 		ArrayList<String> finalLadder = new ArrayList<String>();
 		
-		//finalLadder.add(this.endWord);
-		System.out.println(this.endWord);
+		finalLadder.add(this.endWord);
+	//	System.out.println(this.endWord);
 		
-		while(!(nextWord.equalsIgnoreCase(null)))
+		while(!(this.wordParent.get(nextWord).equals(nextWord)))
 		{
-			//if(!(this.wordParent.get(nextWord).equals(null)))
-			{
-				System.out.println(this.wordParent.get(nextWord));
-	//			finalLadder.add(this.wordParent.get(nextWord));
+				//System.out.println(this.wordParent.get(nextWord));
+				finalLadder.add(this.wordParent.get(nextWord));
 				nextWord = this.wordParent.get(nextWord);
-			}
 		}
-		System.out.println("moosecake");
+		printAllWords(finalLadder);
 	}
 	
 
-	/////////////////////////////////////////// Inside tests /////////////////////////////////////////////
 	/**
-	 * Prints all words read in from specific file
+	 * This is meant to print out all the words added to the 
+	 * arraylist final ladder in reverse order to look better.
 	 */
-	public void printAllWords()
+	public void printAllWords(ArrayList<String> finalLadder)
 	{
-		for(String word : this.allWords)
+		int i;
+		System.out.println("------------------ arraylist ladder ---------------------");
+		for(i = (finalLadder.size()-1); i >= 0; i--)
 		{
-			System.out.println(word);
+			System.out.println(finalLadder.get(i));
 		}
 	}
 }

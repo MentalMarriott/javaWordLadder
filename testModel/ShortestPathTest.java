@@ -13,9 +13,11 @@ public class ShortestPathTest
 	public void test()
 	{
 		ShortestPath shrtPath = new ShortestPath("basil", "flack");
+		if(shrtPath.isValidParameters())
+		{
 		shrtPath.calculateShortestPath();
+		}
 		//System.out.println(shrtPath.getWordParent().get("bob"));
-		
 	}
 
 }
