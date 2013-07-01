@@ -12,6 +12,8 @@ public class ShortestPath
 	private HashMap<String, String> wordParent = new HashMap<String, String>();
 	private ArrayList<String> allWords = new ArrayList<String>();
 	private ArrayList<String> queue = new ArrayList<String>();
+	private ArrayList<String> finalLadder = new ArrayList<String>();
+
 	
 	private boolean validParameters = true;
 	private String parent, startWord, endWord;
@@ -85,7 +87,7 @@ public class ShortestPath
 	}
 	
 	/**
-	 * Returns true only if bothe words lengths match and they
+	 * Returns true only if both words lengths match and they
 	 * can be found in the list of all words.
 	 * @return validParameters
 	 */
@@ -163,8 +165,6 @@ public class ShortestPath
 	{
 		String nextWord = this.endWord;
 		
-		ArrayList<String> finalLadder = new ArrayList<String>();
-		
 		finalLadder.add(this.endWord);
 	//	System.out.println(this.endWord);
 		
@@ -191,4 +191,14 @@ public class ShortestPath
 			System.out.println(finalLadder.get(i));
 		}
 	}
+
+
+
+	public ArrayList<String> getAllWords()
+	{
+		return this.finalLadder;
+	}
+
+
 }
+

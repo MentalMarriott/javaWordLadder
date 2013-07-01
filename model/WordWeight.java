@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * @author Christopher Marriott
  *
@@ -21,7 +24,8 @@ public class WordWeight
 		this.weight = weight;
 		this.parent = parent;
 	}
-
+	
+	
     /**
      * Returns the weight of the parent word.
      * @return weight
